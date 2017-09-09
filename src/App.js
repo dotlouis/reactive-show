@@ -1,33 +1,35 @@
-import React, { Component } from 'react';
-import { Observable } from 'rxjs/Rx';
-import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+import React, { Component } from 'react';
+
+import { Main } from './Main/Main';
+import { SideBar } from './SideBar/SideBar';
+
+export default class App extends Component {
   constructor(props) {
     super(props);
-    this.createObservable = this.createObservable.bind(this);
-  }
-  createObservable() {
-    console.log('plop');
-    const o = Observable.timer(1000, 1000);
-    o.subscribe(n => console.log(this.timer++));
+    this.state = {
+      sources: [],
+    };
   }
 
-  timer = 0;
+  createSource = () => {
+    this.setState({
+      sources: [
+        ...this.state.sources,
+        {
+          id: this.state.sources.length.toString(),
+        },
+      ],
+    });
+  };
 
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-          <button onClick={this.createObservable}>Create Observable</button>
-        </div>
-        <div className="plop">{this.timer}</div>
+        <SideBar onCreateSource={this.createSource} />
+        <Main sources={this.state.sources} />
       </div>
     );
   }
 }
-
-export default App;

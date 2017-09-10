@@ -1,34 +1,32 @@
-import './Source.css';
+import './Node.css';
 
 import React, { Component } from 'react';
 
 // useful: https://stackoverflow.com/questions/42376972/best-way-to-import-observable-from-rxjs
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/throttleTime';
 
-export class Source extends Component {
+export class Node extends Component {
   initialX = 100;
   initialY = 100;
   radius = 15;
-  spacing = 50;
+  spacing = 200;
 
-  interval = Observable.interval(1000);
   pulseCircles = [];
   PULSE_THROTTLE_TIME = 100;
   PULSE_ANIMATION_DURATION = 1000;
 
   constructor(props) {
     super(props);
-    this.x =
-      this.props.source.id * (this.radius + this.spacing) + this.initialX;
+    this.x = this.props.node.id * (this.radius + this.spacing) + this.initialX;
     this.y = this.initialY;
     this.state = {
       pulseCircles: [],
     };
-    this.interval
-      .throttleTime(this.PULSE_THROTTLE_TIME)
+    console.log(this.props.node);
+    this.props.node.source
+      // .throttleTime(this.PULSE_THROTTLE_TIME)
       .do(this.pulse)
       .subscribe();
   }
@@ -48,11 +46,11 @@ export class Source extends Component {
       pulseCircles: [
         ...this.state.pulseCircles,
         <circle
-          className="Source pulse"
+          className={`${this.props.type} pulse`}
           cx={this.x}
           cy={this.y}
           r={this.radius}
-          key={payload}
+          key={`${payload}`}
         />,
       ],
     });
@@ -62,7 +60,12 @@ export class Source extends Component {
     return (
       <g>
         <g>{this.state.pulseCircles}</g>
-        <circle className="Source" cx={this.x} cy={this.y} r={this.radius} />
+        <circle
+          className={this.props.type}
+          cx={this.x}
+          cy={this.y}
+          r={this.radius}
+        />
       </g>
     );
   }

@@ -1,6 +1,11 @@
-.Source {
+.source {
   fill: #50e3c2;
 }
+
+.subscription {
+  fill: #4652fd;
+}
+
 .pulse {
   transform: scale(0.5);
   transform-origin: center center;

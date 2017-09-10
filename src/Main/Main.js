@@ -1,17 +1,16 @@
 import './Main.css';
 
 import React, { Component } from 'react';
-import { Source } from '../Source/Source';
+import { Node } from '../Node/Node';
 
 export class Main extends Component {
   render() {
-    const sources = [];
-    this.props.sources.forEach(source => {
-      sources.push(
-        <Source className="source" key={source.id} source={source} />,
-      );
-    });
-
-    return <svg className="Main">{sources}</svg>;
+    return (
+      <svg className="Main">
+        {this.props.nodes.map(node => {
+          return <Node key={node.id} node={node} />;
+        })}
+      </svg>
+    );
   }
 }

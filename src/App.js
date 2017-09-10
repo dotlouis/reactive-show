@@ -8,27 +8,20 @@ import { SideBar } from './SideBar/SideBar';
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      sources: [],
-    };
+    this.state = { nodes: [] };
   }
 
-  createSource = () => {
+  addNode = source => {
     this.setState({
-      sources: [
-        ...this.state.sources,
-        {
-          id: this.state.sources.length.toString(),
-        },
-      ],
+      nodes: [...this.state.nodes, { id: this.state.nodes.length, source }],
     });
   };
 
   render() {
     return (
       <div className="App">
-        <SideBar onCreateSource={this.createSource} />
-        <Main sources={this.state.sources} />
+        <SideBar {...this.state} onSourceCreated={this.addNode} />
+        <Main {...this.state} />
       </div>
     );
   }

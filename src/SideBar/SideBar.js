@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/map';
 
 export class SideBar extends Component {
   createTimer = () => {

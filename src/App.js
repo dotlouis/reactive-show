@@ -2,26 +2,38 @@ import './App.css';
 
 import React, { Component } from 'react';
 
-import { Main } from './Main/Main';
+import { Canvas } from './Canvas/Canvas';
 import { SideBar } from './SideBar/SideBar';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { nodes: [] };
+    this.state = {
+      nodes: [],
+    };
   }
 
-  addNode = source => {
+  addNode = newNode => {
     this.setState({
-      nodes: [...this.state.nodes, { id: this.state.nodes.length, source }],
+      nodes: [...this.state.nodes, newNode],
+    });
+  };
+
+  removeNode = nodeId => {
+    this.setState({
+      nodes: this.state.nodes.filter(node => node.id !== nodeId),
     });
   };
 
   render() {
     return (
       <div className="App">
-        <SideBar {...this.state} onSourceCreated={this.addNode} />
-        <Main {...this.state} />
+        <SideBar
+          {...this.state}
+          onNodeAdded={this.addNode}
+          onNodeRemoved={this.removeNode}
+        />
+        <Canvas {...this.state} />
       </div>
     );
   }

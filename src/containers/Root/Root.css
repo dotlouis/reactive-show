@@ -1,0 +1,6 @@
+.Root {
+  height: 100%;
+  text-align: center;
+  display: grid;
+  grid: 'sidebar main' / 250px auto;
+}

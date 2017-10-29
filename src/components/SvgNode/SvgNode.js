@@ -1,12 +1,12 @@
-import './SvgSubscription.css';
+import './SvgNode.css';
 
-import React, { Component } from 'react';
+import React from 'react';
 
 // useful: https://stackoverflow.com/questions/42376972/best-way-to-import-observable-from-rxjs
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/throttleTime';
 
-export class SvgSubscription extends Component {
+export class SvgNode extends React.Component {
   pulseSubscription;
   pulseTimeouts = [];
   PULSE_THROTTLE_TIME = 100;
@@ -15,7 +15,6 @@ export class SvgSubscription extends Component {
   constructor(props) {
     super(props);
     this.state = { pulseCircles: [] };
-    this.coords = this.props.node.coords;
   }
 
   componentDidMount() {
@@ -37,15 +36,17 @@ export class SvgSubscription extends Component {
       }, this.PULSE_ANIMATION_DURATION),
     );
 
+    const { coords } = this.props.node;
+
     // add the pulse circle
     this.setState({
       pulseCircles: [
         ...this.state.pulseCircles,
         <circle
           className={`${this.props.type} pulse`}
-          cx={this.coords.x}
-          cy={this.coords.y}
-          r={this.coords.w / 2}
+          cx={coords.x}
+          cy={coords.y}
+          r={coords.w / 2}
           key={`${this.pulseTimeouts.length}`}
         />,
       ],
@@ -53,20 +54,26 @@ export class SvgSubscription extends Component {
   };
 
   onMouseEnterHandler = e => {
-    this.props.onMouseEnter(e, this.props.node);
+    this.props.onOpenControls(this.props.node);
+  };
+
+  onClickHandler = e => {
+    this.props.node.onClick(e);
   };
 
   render() {
+    const { coords } = this.props.node;
+
     return (
       <g>
         <g>{this.state.pulseCircles}</g>
         <circle
           onMouseEnter={this.onMouseEnterHandler}
-          onMouseLeave={this.onMouseLeaveHandler}
-          className="SvgSubscription"
-          cx={this.coords.x}
-          cy={this.coords.y}
-          r={this.coords.w / 2}
+          onClick={this.onClickHandler}
+          className={`SvgNode ${this.props.node.type}`}
+          cx={coords.x}
+          cy={coords.y}
+          r={coords.w / 2}
         />
       </g>
     );

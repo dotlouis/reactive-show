@@ -14,14 +14,16 @@ export class Canvas extends React.Component<{ treeStore?: Tree }> {
     const h = hierarchy(this.props.treeStore!);
     const t = tree()(h);
 
-    let nodes;
-    if (t.children) {
-      nodes = t.children.map((node, index) => <Node key={index} {...node} />);
-    }
+    // let nodes;
+    // if (t.children) {
+    //   nodes = t.children.map((node, index) => <Node key={index} node={node} />);
+    // }
 
     return (
       <div className="CanvasWrapper">
-        <svg className="SvgCanvas">{nodes}</svg>
+        <svg className="SvgCanvas">
+          <Node node={t} />
+        </svg>
         {/* <div className="HtmlCanvas">
           <Action
             node={this.state.node}

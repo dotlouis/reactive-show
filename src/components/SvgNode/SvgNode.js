@@ -18,11 +18,17 @@ export class SvgNode extends React.Component {
   }
 
   componentDidMount() {
-    this.pulseSubscription = this.props.node.source.do(this.pulse).subscribe();
+    if (this.props.node.subscription) {
+      this.pulseSubscription = this.props.node.subscription.source
+        .do(this.pulse)
+        .subscribe();
+    }
   }
 
   componentWillUnmount() {
-    this.pulseSubscription.unsubscribe();
+    if (this.pulseSubscription) {
+      this.pulseSubscription.unsubscribe();
+    }
     this.pulseTimeouts.forEach(timeout => clearTimeout(timeout));
   }
 
@@ -71,7 +77,7 @@ export class SvgNode extends React.Component {
           onMouseEnter={this.onMouseEnterHandler}
           onClick={this.onClickHandler}
           className={`SvgNode ${this.props.node.type}`}
-          cx={coords.x}
+          cx={`${coords.x}%`}
           cy={coords.y}
           r={coords.w / 2}
         />
